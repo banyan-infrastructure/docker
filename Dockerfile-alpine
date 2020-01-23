@@ -1,6 +1,7 @@
-FROM openjdk:jdk-alpine
+FROM openjdk:jre-alpine
 
-RUN apk add --no-cache docker git git-lfs openssh-client curl unzip bash ttf-dejavu coreutils tini
+RUN apk add --no-cache bash coreutils curl docker git git-lfs openssh-client shadow tini ttf-dejavu unzip \
+  && rm -rf /var/lib/apt/lists/*
 
 ARG user=jenkins
 ARG group=jenkins
@@ -25,7 +26,6 @@ RUN mkdir -p $JENKINS_HOME \
   && addgroup -g 996 hostdocker \
   && usermod -aG hostdocker ${user}
 
-
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
 #VOLUME $JENKINS_HOME
@@ -37,10 +37,10 @@ RUN mkdir -p ${REF}/init.groovy.d
 
 # jenkins version being bundled in this docker image
 ARG JENKINS_VERSION
-ENV JENKINS_VERSION ${JENKINS_VERSION:-2.60.3}
+ENV JENKINS_VERSION ${JENKINS_VERSION:-2.193}
 
 # jenkins.war checksum, download will be validated using it
-ARG JENKINS_SHA=2d71b8f87c8417f9303a73d52901a59678ee6c0eefcf7325efed6035ff39372a
+ARG JENKINS_SHA=516d8fd3ef9a6c622079a0b200419f5c7039b3cc9de5d473410111b0f45c8985
 
 # Can be used to customize where jenkins.war get downloaded from
 ARG JENKINS_URL=https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/${JENKINS_VERSION}/jenkins-war-${JENKINS_VERSION}.war
