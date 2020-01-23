@@ -1,7 +1,6 @@
 FROM openjdk:jre-alpine
 
-RUN apk add --no-cache \
-  bash coreutils curl docker git openssh-client shadow tini ttf-dejavu unzip \
+RUN apk add --no-cache bash coreutils curl docker git git-lfs openssh-client shadow tini ttf-dejavu unzip \
   && rm -rf /var/lib/apt/lists/*
 
 ARG user=jenkins
